@@ -103,6 +103,16 @@
         tr {
             height: 22px;
         }
+
+
+        .color1-text {
+            color: green;
+        }
+
+        .color2-text {
+            color: red;
+}
+
     </style>
 
 
@@ -595,62 +605,72 @@
 
             if (threadingQty != 0) {
                 tableHTML += `
-            <p><strong>Threading Charges: </strong>${threadingQty} x ${threadingRate} = ${threadingAmt}</p>
+            <p><strong>Threading Charges: </strong>${threadingQty} x ${threadingRate} = <span class="color1-text">${threadingAmt}</span></p>
             `
             }
 
             if (beadsWt != 0) {
                 tableHTML += `
-            <p><strong>Beads Charges: </strong>${beadsWt} x ${beadsRate} = ${beadsAmt}</p>
+            <p><strong>Beads Charges: </strong>${beadsWt} x ${beadsRate} = <span class="color1-text">${beadsAmt}<span></p>
             `
             }
 
 
             if (otherCharges != 0) {
                 tableHTML += `
-            <p><strong>Other Charges: </strong>${formatIndianCurrency(otherCharges)}</p>
+            <p><strong>Other Charges: </strong><span class="color1-text">${formatIndianCurrency(otherCharges)}</span></p>
             `
             }
 
             if (silverRate == 0) {
                 tableHTML += `
-            <p><strong>Total Nett Weight:</strong> ${totalNett}</p>
+            <div style="display: flex; justify-content: space-between;">
+            <p style="margin-top: 13px;"><strong>Total Nett Weight:</strong> <span class="color1-text">${formatNumber(totalNett, 3)} </span> </p>
+            <p style="margin-top: 13px;">Billed By: ____________________________</p>
+            </div>
             `
             }
 
 
             if (silverRate != 0) {
                 tableHTML += `
-            <p><strong>Total Nett Weight:</strong> ${formatNumber(totalNett, 3)} x ${formatIndianCurrency(silverRate)} = ${formatIndianCurrency(Math.round(totalNett * silverRate))}</p>
+            <div style="display: flex; justify-content: space-between;">
+            <p style="margin-top: 13px;"><strong>Total Nett Weight:</strong> ${formatNumber(totalNett, 3)} x ${formatIndianCurrency(silverRate)} = <span class="color1-text">${formatIndianCurrency(Math.round(totalNett * silverRate))} </span> </p>
+            <p style="margin-top: 13px;">Billed By: ____________________________</p>
+            </div>
             `
             }
 
 
             if (gstRate == 0) {
                 tableHTML += `
-            <p><strong>Total MC:</strong> ${formatIndianCurrency(Math.round(totalMC))}</p>
+            <div style="display: flex; justify-content: space-between;">
+            <p style="margin-top: 2px;"><strong>Total MC:</strong> <span class="color1-text"> ${formatIndianCurrency(Math.round(totalMC))} </span> </p>
+            <p style="margin-top: 2px;">Packed By: ___________________________</p>
+            </div>
             `
             }
 
 
             if (gstRate != 0) {
                 tableHTML += `
-            <p><strong>Total MC:</strong> ${formatIndianCurrency(totalMC)} + ${gstRate}% = ${formatIndianCurrency(Math.round(totalMC * (1 + (gstRate / 100))))}</p>
+                <div style="display: flex; justify-content: space-between;">
+            <p style="margin-top: 2px;"><strong>Total MC:</strong> ${formatIndianCurrency(totalMC)} + ${gstRate}% = <span class="color1-text"> ${formatIndianCurrency(Math.round(totalMC * (1 + (gstRate / 100))))} </span> </p>
+            <p style="margin-top: 2px;">Packed By: ___________________________</p>
+            </div>
             `
             }
 
 
             tableHTML += `
-            <p><strong>Total Amount:</strong> ${totalAmt}</p>
+            <p><strong>Total Amount:</strong> <span class="color2-text"> ${totalAmt} </span> </p>
             `;
 
-
-            tableHTML += `
+            tableHTML += `            
+            <p><span style="float:left;"><strong>Remarks: </strong>${remarks}</span>   <span style="float:right;">MR</span></p>
             
-            <p><strong>Remarks: </strong>${remarks}<p>
-            <p style="text-align: right;">MR</p>
     `;
-
+            //<p style="text-align: right;">MR</p>
             // Insert the table into the visible div
             pdfContainer.innerHTML = tableHTML;
 
@@ -669,8 +689,6 @@
 
             // Old monolithic-style usage:
             html2pdf(element, options);
-
-
         }
 
 
